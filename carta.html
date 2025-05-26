@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carta Especial para Ti</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fce4ec;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+      max-width: 600px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .envelope, .response-buttons {
+      background: #f8bbd0;
+      padding: 40px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+
+    .envelope:hover {
+      transform: scale(1.02);
+      cursor: pointer;
+    }
+
+    .letter {
+      display: none;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.95);}
+      to {opacity: 1; transform: scale(1);}
+    }
+
+    .letter h2 {
+      color: #ec407a;
+      margin-bottom: 15px;
+    }
+
+    .letter p {
+      color: #444;
+      text-align: justify;
+      line-height: 1.6;
+    }
+
+    .final-phrases {
+      margin-top: 30px;
+    }
+
+    .final-phrases p {
+      opacity: 0;
+      font-style: italic;
+      font-size: 1.1em;
+      color: #d81b60;
+      animation: fadePhrase 1.5s ease forwards;
+    }
+
+    .final-phrases p:nth-child(1) { animation-delay: 1s; }
+    .final-phrases p:nth-child(2) { animation-delay: 3s; }
+    .final-phrases p:nth-child(3) { animation-delay: 5s; }
+
+    @keyframes fadePhrase {
+      to { opacity: 1; }
+    }
+
+    .button-area {
+      margin-top: 20px;
+    }
+
+    .custom-btn {
+      background-color: #ec407a;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 14px rgba(236, 64, 122, 0.4);
+    }
+
+    .custom-btn:hover {
+      background-color: #d81b60;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(216, 27, 96, 0.6);
+    }
+
+    .heart-final {
+      font-size: 2em;
+      margin-top: 25px;
+      color: #e91e63;
+    }
+
+    .flower {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/616/616408.png');
+      background-size: cover;
+      animation: fall 10s linear infinite;
+      opacity: 0.6;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10%); opacity: 0; }
+      100% { transform: translateY(110vh); opacity: 1; }
+    }
+
+    audio {
+      display: none;
+    }
+
+    .response-buttons button {
+      margin: 10px;
+      font-size: 1.1em;
+    }
+
+    @media (max-width: 600px) {
+      .letter, .envelope, .response-buttons {
+        padding: 20px;
+      }
+      .letter p, .final-phrases p {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="response-buttons" id="initialPrompt">
+      <h1>¿Quieres ver tu carta?</h1>
+      <button class="custom-btn" onclick="respuesta(true)">Sí</button>
+      <button class="custom-btn" onclick="respuesta(false)">No</button>
+    </div>
+
+    <div class="envelope" id="openLetter" style="display:none">
+      <h1>¡Hola amor!</h1>
+      <p>Haz clic para abrir tu carta especial</p>
+    </div>
+
+    <div class="letter" id="letter">
+      <h2>Para ti, mi persona favorita...</h2>
+      <p>Hola Caro,
+Todavía recuerdo la primera vez que te vi. Estaba nervioso, de verdad, y te confieso que ese nervio no se ha ido del todo. Pero cada día que paso contigo, me doy cuenta de lo increíble que eres y de lo mucho que has empezado a significar para mí. Verte sonreír, compartir esos momentos y conversaciones contigo... todo eso hace que mis días sean más felices. Y más que nada, deseo ser esa felicidad para ti también.</p>
+      <p>Antes, a veces dudaba si podría volver a sentir esa alegría verdadera con alguien más, pero hoy sé que la encontré contigo. Creo en el destino, en que todo sucede por algo, ya sea bueno o malo. Y aunque no siempre sea fácil, prefiero arriesgarme, porque no hay nada que me haga más feliz que imaginarme sonriendo a tu lado, día tras día.</p>
+
+      <div class="final-phrases">
+        <p>“Eres mi parte favorita del día.”</p>
+        <p>“Verte sonreír es muy bonito”</p>
+        <p>“No dejes de crecer grandota😊”</p>
+      </div>
+
+      <div class="heart-final">Con cariño... Junior😊</div>
+
+      <div class="button-area">
+        <button class="custom-btn" id="moreLove">Haz clic si quieres otra sorpresa</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3" />
+    Tu navegador no soporta audio.
+  </audio>
+
+  <script>
+    const initialPrompt = document.getElementById('initialPrompt');
+    const openBtn = document.getElementById('openLetter');
+    const letter = document.getElementById('letter');
+    const music = document.getElementById('bgMusic');
+    const surpriseBtn = document.getElementById('moreLove');
+
+    function respuesta(si) {
+      if (si) {
+        initialPrompt.style.display = 'none';
+        letter.style.display = 'block';
+        music.play().catch(() => console.log('Autoplay bloqueado'));
+        createFlowers();
+      } else {
+        alert('Piénsalo bien jajaja 😄');
+      }
+    }
+
+    openBtn.addEventListener('click', () => {
+      letter.style.display = 'block';
+      openBtn.style.display = 'none';
+      music.play().catch(() => console.log('Autoplay bloqueado'));
+      createFlowers();
+    });
+
+    surpriseBtn.addEventListener('click', () => {
+      alert('vamos por un cafecito jajajaja');
+    });
+
+    function createFlowers() {
+      for (let i = 0; i < 20; i++) {
+        const flower = document.createElement('div');
+        flower.classList.add('flower');
+        flower.style.left = Math.random() * 100 + 'vw';
+        flower.style.animationDuration = (5 + Math.random() * 5) + 's';
+        document.body.appendChild(flower);
+
+        setTimeout(() => {
+          flower.remove();
+        }, 10000);
+      }
+    }
+  </script>
+</body>
+</html>
